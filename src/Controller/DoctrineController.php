@@ -46,4 +46,63 @@ class DoctrineController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @Route("/users")
+     */
+    public function listUsers(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAll();
+
+        // Retourne tous le contenu de la table user
+        // sous la forme d'un tableau d'objets User
+        dump($users);
+
+        return $this->render(
+            'doctrine/list_users.html.twig',
+            [
+                'users' => $users
+            ]
+        );
+    }
+
+    /**
+     * @Route("/users/firstname/{firstname}")
+     */
+    public function usersByFirstname($firstname, UserRepository $userRepository)
+    {
+        // findBy permet de faire une requête avec une clause WHERE,
+        // ici : select * from user where firstname = 'prenom_reçu_dans_l_url';
+        // findBy() retourne un tableau d'objet User
+        $users = $userRepository->findBy([
+            'firstname' => $firstname
+        ]);
+
+        return $this->render(
+            'doctrine/list_users.html.twig',
+            [
+                'users' => $users
+            ]
+        );
+    }
+
+    /**
+     * @Route("/pseudo/{pseudo}")
+     */
+    public function userByPseudo($pseudo, UserRepository $userRepository)
+    {
+        // findOneBy() s'utilise quand on est sûr qu'il n'y aura
+        // pas plus d'un résultat à la requête.
+        // Retourne un objet User ou null
+        $user = $userRepository->findOneBy([
+            'pseudo' => $pseudo
+        ]);
+
+        return $this->render(
+            'doctrine/one_user.html.twig',
+            [
+                'user' => $user
+            ]
+        );
+    }
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#
+        - lister les utilisateurs dans un tableau HTML
+        avec toutes les infos sauf la date de naissance
+
+        - ajouter une colonne pour la date de naissance
+    #}
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Pseudo</th>
+            <th>Date de naissance</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.pseudo }}</td>
+                <td>
+                    {% if user.birthdate is not null %}
+                        {{ user.birthdate|date('d/m/Y') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
